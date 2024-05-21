@@ -1,0 +1,127 @@
+[gd_scene load_steps=12 format=3 uid="uid://bf87yb5846sis"]
+
+[ext_resource type="Texture2D" uid="uid://d0jjrd0dphp80" path="res://asset/sprite/boat.png" id="1_3cx6c"]
+[ext_resource type="Script" path="res://scene/boat/boat.gd" id="1_gjrp0"]
+[ext_resource type="Texture2D" uid="uid://0snlccdafufb" path="res://asset/sprite/kail.png" id="3_f3ew6"]
+[ext_resource type="Script" path="res://scene/boat/HookArea.gd" id="4_fxg0b"]
+[ext_resource type="Texture2D" uid="uid://pyt0xic6y0qn" path="res://asset/sprite/harpoon/harpoon calssic.png" id="4_fxsr0"]
+[ext_resource type="Script" path="res://scene/boat/HarpoonThrower.gd" id="5_sjwe2"]
+[ext_resource type="Texture2D" uid="uid://cxyljxadulc5f" path="res://asset/sprite/harpoon/harpoon calssic ammo.png" id="6_fy44o"]
+[ext_resource type="Texture2D" uid="uid://b211el4rigadb" path="res://asset/sprite/IsiHeart.png" id="8_1u0d8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g551g"]
+radius = 3.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wlena"]
+size = Vector2(47, 9)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yabxp"]
+size = Vector2(30, 5)
+
+[node name="Boat" type="StaticBody2D"]
+script = ExtResource("1_gjrp0")
+
+[node name="FishingLine" type="Line2D" parent="."]
+points = PackedVector2Array(-25, 4, -25, 18)
+width = 1.0
+default_color = Color(0.14902, 0.196078, 0.219608, 1)
+texture_mode = 1
+
+[node name="BoatSprite" type="Sprite2D" parent="."]
+position = Vector2(-1, 0)
+texture = ExtResource("1_3cx6c")
+
+[node name="Join" type="Marker2D" parent="BoatSprite"]
+position = Vector2(-24, 4)
+gizmo_extents = 5.0
+
+[node name="Hook" type="Sprite2D" parent="."]
+position = Vector2(-25, 15)
+texture = ExtResource("3_f3ew6")
+
+[node name="Join" type="Marker2D" parent="Hook"]
+position = Vector2(0, -10)
+gizmo_extents = 5.0
+
+[node name="HookArea" type="Area2D" parent="Hook"]
+position = Vector2(0, 8)
+script = ExtResource("4_fxg0b")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hook/HookArea"]
+shape = SubResource("CircleShape2D_g551g")
+
+[node name="HarpoonThrower" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(19, 10)
+texture = ExtResource("4_fxsr0")
+offset = Vector2(2, 0)
+script = ExtResource("5_sjwe2")
+
+[node name="Projectile" type="Sprite2D" parent="HarpoonThrower"]
+z_index = -1
+position = Vector2(3, -1)
+texture = ExtResource("6_fy44o")
+
+[node name="Timer" type="Timer" parent="HarpoonThrower"]
+wait_time = 5.0
+one_shot = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2.5, 8.5)
+shape = SubResource("RectangleShape2D_wlena")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(2.5, 8.5)
+shape = SubResource("RectangleShape2D_wlena")
+
+[node name="GatheringArea" type="Area2D" parent="."]
+position = Vector2(-19, 13)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GatheringArea"]
+position = Vector2(-6, 7.5)
+shape = SubResource("RectangleShape2D_yabxp")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+offset_top = 4.0
+offset_right = 160.0
+offset_bottom = 36.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("8_1u0d8")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="Control" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 122.0
+offset_top = 62.0
+offset_right = 197.0
+offset_bottom = 93.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+text = "RESTART"
+
+[connection signal="timeout" from="HarpoonThrower/Timer" to="HarpoonThrower" method="_on_timer_timeout"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="GatheringArea" to="." method="_on_gathering_area_area_entered"]
+[connection signal="pressed" from="Control/Button" to="." method="_on_button_pressed"]

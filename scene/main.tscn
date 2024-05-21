@@ -1,9 +1,93 @@
-[gd_scene load_steps=2 format=3 uid="uid://cqt8cudticamd"]
+[gd_scene load_steps=7 format=3 uid="uid://cqt8cudticamd"]
 
-[ext_resource type="Texture2D" uid="uid://d0jjrd0dphp80" path="res://asset/sprite/boat.png" id="1_3rva6"]
+[ext_resource type="PackedScene" uid="uid://bf87yb5846sis" path="res://scene/boat/boat.tscn" id="1_cj0ml"]
+[ext_resource type="Texture2D" uid="uid://b6fkogohlq7ba" path="res://asset/envi/sky.png" id="1_p67pw"]
+[ext_resource type="Script" path="res://scene/Level.gd" id="1_wcaro"]
+[ext_resource type="Texture2D" uid="uid://c1lx56ya8s76i" path="res://asset/envi/water.png" id="1_y88vf"]
+[ext_resource type="Texture2D" uid="uid://bhi0q4yk7dxx5" path="res://asset/envi/mountain.png" id="2_8l1sw"]
+[ext_resource type="Texture2D" uid="uid://bxqsa2d0440pf" path="res://asset/envi/cloud.png" id="2_hu2hv"]
 
 [node name="Main" type="Node2D"]
+script = ExtResource("1_wcaro")
 
-[node name="Boat" type="Sprite2D" parent="."]
-position = Vector2(134, 26)
-texture = ExtResource("1_3rva6")
+[node name="Enviro" type="Node2D" parent="."]
+
+[node name="Sky" type="Sprite2D" parent="Enviro"]
+position = Vector2(148, 96)
+texture = ExtResource("1_p67pw")
+
+[node name="Cloud" type="Sprite2D" parent="Enviro"]
+position = Vector2(148, 96)
+texture = ExtResource("2_hu2hv")
+
+[node name="Mountain" type="Sprite2D" parent="Enviro"]
+position = Vector2(147, 120)
+texture = ExtResource("2_8l1sw")
+
+[node name="Water" type="Sprite2D" parent="Enviro"]
+position = Vector2(148, 119)
+texture = ExtResource("1_y88vf")
+
+[node name="ColorRect" type="ColorRect" parent="Enviro"]
+z_index = 3
+offset_left = -44.0
+offset_top = 105.0
+offset_right = 339.0
+offset_bottom = 215.0
+color = Color(0.137255, 0.470588, 0.694118, 0.298039)
+metadata/_edit_lock_ = true
+
+[node name="Boat" parent="." instance=ExtResource("1_cj0ml")]
+position = Vector2(139, 86)
+
+[node name="EnemySpawnLocation" type="Node2D" parent="."]
+
+[node name="Marker2D" type="Marker2D" parent="EnemySpawnLocation"]
+position = Vector2(266, 201)
+
+[node name="Marker2D2" type="Marker2D" parent="EnemySpawnLocation"]
+position = Vector2(222, 199)
+
+[node name="Marker2D3" type="Marker2D" parent="EnemySpawnLocation"]
+position = Vector2(173, 203)
+
+[node name="Marker2D4" type="Marker2D" parent="EnemySpawnLocation"]
+position = Vector2(129, 204)
+
+[node name="Marker2D5" type="Marker2D" parent="EnemySpawnLocation"]
+position = Vector2(87, 201)
+
+[node name="Marker2D6" type="Marker2D" parent="EnemySpawnLocation"]
+position = Vector2(40, 201)
+
+[node name="Marker2D7" type="Marker2D" parent="EnemySpawnLocation"]
+position = Vector2(1, 199)
+
+[node name="ItemSpawnLocation" type="Node2D" parent="."]
+
+[node name="Marker2D" type="Marker2D" parent="ItemSpawnLocation"]
+position = Vector2(278, 126)
+
+[node name="Marker2D2" type="Marker2D" parent="ItemSpawnLocation"]
+position = Vector2(278, 133)
+
+[node name="Marker2D3" type="Marker2D" parent="ItemSpawnLocation"]
+position = Vector2(278, 142)
+
+[node name="Marker2D4" type="Marker2D" parent="ItemSpawnLocation"]
+position = Vector2(278, 151)
+
+[node name="Marker2D5" type="Marker2D" parent="ItemSpawnLocation"]
+position = Vector2(278, 161)
+
+[node name="Marker2D6" type="Marker2D" parent="ItemSpawnLocation"]
+position = Vector2(278, 171)
+
+[node name="Marker2D7" type="Marker2D" parent="ItemSpawnLocation"]
+position = Vector2(278, 182)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
